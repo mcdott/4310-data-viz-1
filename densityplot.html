@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Density Plot</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+  </head>
+  <body>
+    <script>
+      d3.json("mouseData.json").then(function (data) {
+        const width = 1000;
+        const height = 1000;
+
+        let svg = d3
+          .select("body")
+          .append("svg")
+          .attr("width", width)
+          .attr("height", height);
+
+        let colorScale = d3
+          .scaleSequential()
+          .interpolator(d3.interpolatePlasma)
+          .domain([0, 1]);
+
+        // Create density plot
+        let densityData = d3
+          .contourDensity()
+          .x(function (d) {
+            return d.x;
+          })
+          .y(function (d) {
+            return d.y;
+          })
+          .size([width, height])
+          .bandwidth(20)(data);
+
+        svg
+          .selectAll("path")
+          .data(densityData)
+          .enter()
+          .append("path")
+          .attr("d", d3.geoPath())
+          .attr("fill", function (d) {
+            return colorScale(d.value);
+          });
+      });
+    </script>
+  </body>
+</html>
