@@ -16,11 +16,6 @@
           .attr("width", width)
           .attr("height", height);
 
-        let colorScale = d3
-          .scaleSequential()
-          .interpolator(d3.interpolatePlasma)
-          .domain([0, 1]);
-
         // Create density plot
         let densityData = d3
           .contourDensity()
@@ -32,6 +27,16 @@
           })
           .size([width, height])
           .bandwidth(20)(data);
+
+        // calculate the maximum density value
+        let maxDensity = d3.max(densityData, function (d) {
+          return d.value;
+        });
+
+        let colorScale = d3
+          .scaleSequential()
+          .interpolator(d3.interpolatePlasma)
+          .domain([0, maxDensity]);
 
         svg
           .selectAll("path")
