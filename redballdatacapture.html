@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bouncing Ball</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        position: relative;
+      }
+
+      canvas {
+        display: block;
+      }
+
+      #collectButton {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script>
+      let ball;
+      let xPos, yPos;
+      let data = [];
+      let dataInterval;
+      let isDataCollecting = false;
+
+      function setup() {
+        createCanvas(400, 400);
+        ball = new Ball();
+        createButton("Collect Data for 10 sec")
+          .id("collectButton")
+          .mousePressed(startDataCollection);
+      }
+
+      function draw() {
+        background(0); // Black background
+        ball.update();
+        ball.display();
+        if (isDataCollecting) {
+          captureMousePosition();
+        }
+      }
+
+      function startDataCollection() {
+        data = [];
+        isDataCollecting = true;
+        setTimeout(stopDataCollection, 10000); // Collect data for 10 seconds
+        select("#collectButton")
+          .attribute("disabled", true)
+          .style("visibility", "hidden");
+      }
+
+      function stopDataCollection() {
+        isDataCollecting = false;
+        saveDataToFile();
+        select("#collectButton")
+          .attribute("disabled", false)
+          .style("visibility", "visible");
+      }
+
+      function captureMousePosition() {
+        xPos = mouseX;
+        yPos = mouseY;
+        data.push({ x: xPos, y: yPos });
+      }
+
+      function saveDataToFile() {
+        const jsonData = JSON.stringify(data);
+        const blob = new Blob([jsonData], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "mouse_positions.json"; // This data file will appear in local downloads folder
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
+      class Ball {
+        constructor() {
+          this.radius = 30;
+          this.x = random(this.radius, width - this.radius);
+          this.y = random(this.radius, height - this.radius);
+          this.xSpeed = random(-2, 2);
+          this.ySpeed = random(-2, 2);
+        }
+
+        update() {
+          this.x += this.xSpeed;
+          this.y += this.ySpeed;
+
+          if (this.x <= this.radius || this.x >= width - this.radius) {
+            this.xSpeed *= -1;
+          }
+          if (this.y <= this.radius || this.y >= height - this.radius) {
+            this.ySpeed *= -1;
+          }
+        }
+
+        display() {
+          fill(255, 0, 0); // Red color
+          ellipse(this.x, this.y, this.radius * 2);
+        }
+      }
+    </script>
+  </body>
+</html>
