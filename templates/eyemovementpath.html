@@ -9,7 +9,7 @@ block body %}
       const duration = 3000; // duration of the animation in milliseconds
 
       let svg = d3
-        .select("body")
+        .select("#container")
         .append("svg")
         .attr("width", width)
         .attr("height", height);
@@ -29,8 +29,8 @@ block body %}
         .append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", 1.5)
+        .attr("stroke", "red")
+        .attr("stroke-width", 2)
         .attr("d", line);
 
       // Calculate the total length of the path

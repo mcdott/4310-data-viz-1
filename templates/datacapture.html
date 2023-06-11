@@ -1,7 +1,5 @@
-{% extends "layout.html" %} {% block title %}Photo Capture{% endblock %} {%
-block body %}
-<button onclick="startDataCollection()">Start Data Collection</button>
-
+{% extends "layout.html" %} {% block title %}Data Capture{% endblock %} {% block
+body %}
 <script>
   let photo;
   let data = [];
@@ -54,4 +52,6 @@ block body %}
     photo = document.getElementById("photo");
   });
 </script>
+{% endblock %} {% block button %}
+<button onclick="startDataCollection()">Start Data Collection</button>
 {% endblock %}

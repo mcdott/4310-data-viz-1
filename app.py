@@ -12,9 +12,9 @@ def save():
         json.dump(data, file)
     return 'Data saved successfully.'
 
-@app.route('/photo-capture')
+@app.route('/data-capture')
 def photo_capture():
-    return render_template('photodatacapture.html')
+    return render_template('datacapture.html')
 
 @app.route('/density-plot')
 def density_plot():
