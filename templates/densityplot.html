@@ -4,8 +4,8 @@ body %}
 <script>
   d3.json("{{ url_for('static', filename='data/mouse_positions.json')}}").then(
     function (data) {
-      const width = 1000;
-      const height = 1000;
+      const width = 600;
+      const height = 600;
 
       let svg = d3
         .select("#container")
