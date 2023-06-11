@@ -3,12 +3,48 @@
   <head>
     <title>Eye Movement Path</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        /* justify-content: center; */
+        /* align-items: center; */
+        height: 100vh;
+        position: relative;
+      }
+
+      #container {
+        position: relative;
+        height: 600px;
+        width: 600px;
+      }
+
+      #photo {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        z-index: 1;
+      }
+
+      svg {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: 2;
+      }
+    </style>
   </head>
   <body>
+    <div id="container">
+      <img id="photo" src="photos/dog-ryan-walton-AbNO2iejoXA-unsplash.jpg" />
+      <svg></svg>
+    </div>
     <script>
       d3.json("mouse_positions.json").then(function (data) {
-        const width = 1000;
-        const height = 1000;
+        const width = 600;
+        const height = 600;
         const duration = 3000; // duration of the animation in milliseconds
 
         let svg = d3

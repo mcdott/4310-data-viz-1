@@ -3,8 +3,44 @@
   <head>
     <title>Density Plot</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        /* justify-content: center; */
+        /* align-items: center; */
+        height: 100vh;
+        position: relative;
+      }
+
+      #container {
+        position: relative;
+        height: 600px;
+        width: 600px;
+      }
+
+      #photo {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        z-index: 1;
+      }
+
+      svg {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: 2;
+      }
+    </style>
   </head>
   <body>
+    <div id="container">
+      <img id="photo" src="photos/dog-ryan-walton-AbNO2iejoXA-unsplash.jpg" />
+      <svg></svg>
+    </div>
     <script>
       d3.json("mouse_positions.json").then(function (data) {
         const width = 1000;
@@ -47,7 +83,7 @@
           .attr("fill", function (d) {
             return colorScale(d.value);
           })
-          .style("opacity", 0.2); //Adjust to show background image through density plot
+          .style("opacity", 0.1); //Adjust to show background image through density plot
       });
     </script>
   </body>
