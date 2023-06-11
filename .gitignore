@@ -1,0 +1,18 @@
+# Ignore Python virtual environments:
+venv/
+
+# Ignore Python byte-compiled files:
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+
+# Ignore Flask file-uploads:
+uploads/
+
+# Ignore data files:
+data/
+
+# Ignore log files:
+*.log
