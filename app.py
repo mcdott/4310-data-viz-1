@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from flask_cors import CORS
 import json
 
@@ -8,9 +8,21 @@ CORS(app)
 @app.route('/save', methods=['POST'])
 def save():
     data = request.get_json()
-    with open('mouse_positions.json', 'w') as file:
+    with open('static/data/mouse_positions.json', 'w') as file:
         json.dump(data, file)
     return 'Data saved successfully.'
+
+@app.route('/photo-capture')
+def photo_capture():
+    return render_template('photodatacapture.html')
+
+@app.route('/density-plot')
+def density_plot():
+    return render_template('densityplot.html')
+
+@app.route('/eye-movement-path')
+def eye_movement_path():
+    return render_template('eyemovementpath.html')
 
 if __name__ == '__main__':
     app.run(port=5000)
