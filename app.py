@@ -5,6 +5,10 @@ import json
 app = Flask(__name__)
 CORS(app)
 
+@app.route('/')
+def home():
+    return render_template('layout.html')
+
 @app.route('/save', methods=['POST'])
 def save():
     data = request.get_json()

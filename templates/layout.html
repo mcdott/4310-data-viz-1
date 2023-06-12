@@ -50,6 +50,31 @@
         z-index: 1;
       }
 
+      #previous {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 5px;
+        margin: auto;
+        height: 50px;
+        transform: translateX(0);
+        z-index: 3;
+        padding: 0px, 0px;
+      }
+
+      #next {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 5px;
+        left: auto;
+        margin: auto;
+        height: 50px;
+        transform: translateX(0);
+        z-index: 3;
+        padding: 0px, 0px;
+      }
+
       button {
         position: absolute;
         bottom: 20px;
@@ -79,12 +104,38 @@
       <a href="/eye-movement-path">Eye Movement Path</a>
     </nav>
     <div id="container">
-      <img
-        id="photo"
-        src="https://images.unsplash.com/photo-1504826260979-242151ee45b7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80"
-      />
+      <img id="photo" />
+      <button id="previous">&lt;</button>
+      <button id="next">&gt;</button>
       {% block body %}{% endblock %}
     </div>
     {% block button %}{% endblock %}
+    <script>
+      var images = [
+        "https://images.unsplash.com/photo-1504826260979-242151ee45b7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80",
+        "https://images.unsplash.com/photo-1548894817-c0e7f6faaaf2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjR8fGZyb2d8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60",
+        "https://images.unsplash.com/photo-1560743641-3914f2c45636?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGNhdCUyMGFuZCUyMGRvZ3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
+        "https://images.unsplash.com/photo-1546273703-d2658be9de64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjJ8fGxsYW1hfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+        "https://images.unsplash.com/photo-1607453998825-f3f36da5ab18?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODJ8fHR3byUyMGZyaWVuZHN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60",
+        "https://images.unsplash.com/photo-1594082185702-53e788763c92?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzB8fHR3byUyMGZyaWVuZHN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60",
+        "https://images.unsplash.com/photo-1598316560463-0083295ca902?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTAwfHx0d28lMjBmcmllbmRzfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+        "https://images.unsplash.com/photo-1464998857633-50e59fbf2fe6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTQwfHx0d28lMjBmcmllbmRzfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+      ];
+      var currentImageIndex = 0;
+      document.getElementById("photo").src = images[currentImageIndex];
+
+      document
+        .getElementById("previous")
+        .addEventListener("click", function () {
+          currentImageIndex =
+            (currentImageIndex - 1 + images.length) % images.length;
+          document.getElementById("photo").src = images[currentImageIndex];
+        });
+
+      document.getElementById("next").addEventListener("click", function () {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        document.getElementById("photo").src = images[currentImageIndex];
+      });
+    </script>
   </body>
 </html>
