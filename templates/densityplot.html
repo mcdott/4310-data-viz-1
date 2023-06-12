@@ -2,50 +2,54 @@
 body %}
 <script src="https://d3js.org/d3.v6.min.js"></script>
 <script>
-  d3.json("{{ url_for('static', filename='data/mouse_positions.json')}}").then(
-    function (data) {
-      const width = 600;
-      const height = 600;
+  window.onload = function () {
+    setTimeout(function () {
+      d3.json(
+        "{{ url_for('static', filename='data/mouse_positions.json')}}"
+      ).then(function (data) {
+        const width = 600;
+        const height = 600;
 
-      let svg = d3
-        .select("#container")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height);
+        let svg = d3
+          .select("#container")
+          .append("svg")
+          .attr("width", width)
+          .attr("height", height);
 
-      // Create density plot
-      let densityData = d3
-        .contourDensity()
-        .x(function (d) {
-          return d.x;
-        })
-        .y(function (d) {
-          return d.y;
-        })
-        .size([width, height])
-        .bandwidth(20)(data);
+        // Create density plot
+        let densityData = d3
+          .contourDensity()
+          .x(function (d) {
+            return d.x;
+          })
+          .y(function (d) {
+            return d.y;
+          })
+          .size([width, height])
+          .bandwidth(20)(data);
 
-      // calculate the maximum density value
-      let maxDensity = d3.max(densityData, function (d) {
-        return d.value;
+        // calculate the maximum density value
+        let maxDensity = d3.max(densityData, function (d) {
+          return d.value;
+        });
+
+        let colorScale = d3
+          .scaleSequential()
+          .interpolator(d3.interpolatePlasma)
+          .domain([0, maxDensity]);
+
+        svg
+          .selectAll("path")
+          .data(densityData)
+          .enter()
+          .append("path")
+          .attr("d", d3.geoPath())
+          .attr("fill", function (d) {
+            return colorScale(d.value);
+          })
+          .style("opacity", 0.2); //Adjust to show background image through density plot
       });
-
-      let colorScale = d3
-        .scaleSequential()
-        .interpolator(d3.interpolatePlasma)
-        .domain([0, maxDensity]);
-
-      svg
-        .selectAll("path")
-        .data(densityData)
-        .enter()
-        .append("path")
-        .attr("d", d3.geoPath())
-        .attr("fill", function (d) {
-          return colorScale(d.value);
-        })
-        .style("opacity", 0.2); //Adjust to show background image through density plot
-    }
-  );
+    }, 2000); // Delay of 2 seconds (2000 milliseconds)
+  };
 </script>
 {% endblock %}

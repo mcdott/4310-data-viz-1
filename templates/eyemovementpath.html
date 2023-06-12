@@ -2,49 +2,53 @@
 block body %}
 <script src="https://d3js.org/d3.v6.min.js"></script>
 <script>
-  d3.json("{{ url_for('static', filename='data/mouse_positions.json')}}").then(
-    function (data) {
-      const width = 600;
-      const height = 600;
-      const duration = 3000; // duration of the animation in milliseconds
+  window.onload = function () {
+    setTimeout(function () {
+      d3.json(
+        "{{ url_for('static', filename='data/mouse_positions.json')}}"
+      ).then(function (data) {
+        const width = 600;
+        const height = 600;
+        const duration = 3000; // duration of the animation in milliseconds
 
-      let svg = d3
-        .select("#container")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height);
+        let svg = d3
+          .select("#container")
+          .append("svg")
+          .attr("width", width)
+          .attr("height", height);
 
-      // Create a line generator
-      let line = d3
-        .line()
-        .x(function (d) {
-          return d.x;
-        })
-        .y(function (d) {
-          return d.y;
-        });
+        // Create a line generator
+        let line = d3
+          .line()
+          .x(function (d) {
+            return d.x;
+          })
+          .y(function (d) {
+            return d.y;
+          });
 
-      // Add the path
-      let path = svg
-        .append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("stroke", "red")
-        .attr("stroke-width", 2)
-        .attr("d", line);
+        // Add the path
+        let path = svg
+          .append("path")
+          .datum(data)
+          .attr("fill", "none")
+          .attr("stroke", "red")
+          .attr("stroke-width", 3)
+          .attr("d", line);
 
-      // Calculate the total length of the path
-      let totalLength = path.node().getTotalLength();
+        // Calculate the total length of the path
+        let totalLength = path.node().getTotalLength();
 
-      // Animate the path
-      path
-        .attr("stroke-dasharray", totalLength + " " + totalLength)
-        .attr("stroke-dashoffset", totalLength)
-        .transition()
-        .duration(duration)
-        .ease(d3.easeLinear)
-        .attr("stroke-dashoffset", 0);
-    }
-  );
+        // Animate the path
+        path
+          .attr("stroke-dasharray", totalLength + " " + totalLength)
+          .attr("stroke-dashoffset", totalLength)
+          .transition()
+          .duration(duration)
+          .ease(d3.easeLinear)
+          .attr("stroke-dashoffset", 0);
+      });
+    }, 2000); // Delay of 2 seconds
+  };
 </script>
 {% endblock %}
