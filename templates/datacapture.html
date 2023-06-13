@@ -1,0 +1,57 @@
+{% extends "layout.html" %} {% block title %}Data Capture{% endblock %} {% block
+body %}
+<script>
+  let photo;
+  let data = [];
+  let dataInterval;
+  let isDataCollecting = false;
+
+  function startDataCollection() {
+    data = [];
+    isDataCollecting = true;
+    document.addEventListener("mousemove", captureMousePosition);
+    setTimeout(stopDataCollection, 10000); // Stop data collection after 10 seconds (10,000 milliseconds)
+  }
+
+  function stopDataCollection() {
+    document.removeEventListener("mousemove", captureMousePosition);
+    isDataCollecting = false;
+    saveDataToFile();
+  }
+
+  function captureMousePosition(event) {
+    const rect = photo.getBoundingClientRect();
+    const xPos = event.clientX - rect.left;
+    const yPos = event.clientY - rect.top;
+    data.push({ x: xPos, y: yPos });
+  }
+
+  function saveDataToFile() {
+    fetch("http://localhost:5000/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.text();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    photo = document.getElementById("photo");
+  });
+</script>
+{% endblock %} {% block button %}
+<button onclick="startDataCollection()">Start Data Collection</button>
+{% endblock %}

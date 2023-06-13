@@ -1,18 +1,18 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Eye Movement Path</title>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
-  </head>
-  <body>
-    <script>
-      d3.json("mouse_positions(4).json").then(function (data) {
-        const width = 1000;
-        const height = 1000;
+{% extends "layout.html" %} {% block title %}Eye Movement Path{% endblock %} {%
+block body %}
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script>
+  window.onload = function () {
+    setTimeout(function () {
+      d3.json(
+        "{{ url_for('static', filename='data/mouse_positions.json')}}"
+      ).then(function (data) {
+        const width = 600;
+        const height = 600;
         const duration = 3000; // duration of the animation in milliseconds
 
         let svg = d3
-          .select("body")
+          .select("#container")
           .append("svg")
           .attr("width", width)
           .attr("height", height);
@@ -32,8 +32,8 @@
           .append("path")
           .datum(data)
           .attr("fill", "none")
-          .attr("stroke", "steelblue")
-          .attr("stroke-width", 1.5)
+          .attr("stroke", "red")
+          .attr("stroke-width", 3)
           .attr("d", line);
 
         // Calculate the total length of the path
@@ -48,6 +48,7 @@
           .ease(d3.easeLinear)
           .attr("stroke-dashoffset", 0);
       });
-    </script>
-  </body>
-</html>
+    }, 2000); // Delay of 2 seconds
+  };
+</script>
+{% endblock %}

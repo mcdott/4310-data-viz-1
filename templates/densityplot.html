@@ -1,17 +1,17 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Density Plot</title>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
-  </head>
-  <body>
-    <script>
-      d3.json("mouseData.json").then(function (data) {
-        const width = 1000;
-        const height = 1000;
+{% extends "layout.html" %} {% block title %}Density Plot{% endblock %} {% block
+body %}
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script>
+  window.onload = function () {
+    setTimeout(function () {
+      d3.json(
+        "{{ url_for('static', filename='data/mouse_positions.json')}}"
+      ).then(function (data) {
+        const width = 600;
+        const height = 600;
 
         let svg = d3
-          .select("body")
+          .select("#container")
           .append("svg")
           .attr("width", width)
           .attr("height", height);
@@ -49,6 +49,7 @@
           })
           .style("opacity", 0.2); //Adjust to show background image through density plot
       });
-    </script>
-  </body>
-</html>
+    }, 2000); // Delay of 2 seconds (2000 milliseconds)
+  };
+</script>
+{% endblock %}
