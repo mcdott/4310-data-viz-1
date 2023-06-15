@@ -1,32 +1,14 @@
-from flask import Flask, request, render_template
+from flask import Flask, request
 from flask_cors import CORS
 import json
-
 app = Flask(__name__)
 CORS(app)
-
-@app.route('/')
-def home():
-    return render_template('layout.html')
-
 @app.route('/save', methods=['POST'])
 def save():
     data = request.get_json()
-    with open('static/data/mouse_positions.json', 'w') as file:
+    with open('mouse_positions.json', 'w') as file:
         json.dump(data, file)
     return 'Data saved successfully.'
-
-@app.route('/data-capture')
-def photo_capture():
-    return render_template('datacapture.html')
-
-@app.route('/density-plot')
-def density_plot():
-    return render_template('densityplot.html')
-
-@app.route('/eye-movement-path')
-def eye_movement_path():
-    return render_template('eyemovementpath.html')
 
 if __name__ == '__main__':
     app.run(port=5000)
